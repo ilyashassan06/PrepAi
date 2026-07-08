@@ -13,7 +13,7 @@ import Layout from "./Layout";
 
 function App() {
   return (
-    <>
+    <div className="w-full ">
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
@@ -26,7 +26,7 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/Signup" element={<Signup />} />
       </Routes>
-    </>
+    </div>
   );
 }
 
