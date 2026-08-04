@@ -61,7 +61,7 @@ function SideBar() {
 
           </NavLink>
 
-          <NavLink to="/Interview" className={navLinkClass}>
+          <NavLink to="/InterviewSetup" className={navLinkClass}>
 
             {({ isActive }) => (
               <>

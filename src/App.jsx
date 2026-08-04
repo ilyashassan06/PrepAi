@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Layout from "./Layout";
+import ProtectedRoute from "./Context/ProtectedRoute";
 
 function App() {
   return (
@@ -31,14 +32,16 @@ function App() {
   {/* Content */}
   <div className="relative max-w-[1600px] mx-auto  z-10 min-h-screen">
     <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="/InterviewSetup" element={<InterviewSetup />} />
-        <Route path="/Interview" element={<Interview />} />
-        <Route path="/Result" element={<Result />} />
-        <Route path="/History" element={<History />} />
-      </Route>
+      <Route element={<ProtectedRoute />}>
+    <Route element={<Layout />}>
+      <Route path="/" element={<Home />} />
+      <Route path="/Dashboard" element={<Dashboard />} />
+      <Route path="/InterviewSetup" element={<InterviewSetup />} />
+      <Route path="/Interview" element={<Interview />} />
+      <Route path="/Result" element={<Result />} />
+      <Route path="/History" element={<History />} />
+    </Route>
+  </Route>
 
       <Route path="/Login" element={<Login />} />
       <Route path="/Signup" element={<Signup />} />
