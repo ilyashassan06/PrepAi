@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import * as pdfjsLib from "pdfjs-dist";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import {
   User,
   Mail,
@@ -12,7 +14,10 @@ import {
   GraduationCap,
   MessageSquareText,
 } from "lucide-react";
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 import { useForm } from "react-hook-form";
+import AiTipCard from "../components/InterviewSetup/AiTipCard";
+import FormFooter from "../components/InterviewSetup/FormFooter";
 
 function InterviewSetup() {
   const {
@@ -21,10 +26,39 @@ function InterviewSetup() {
     formState: { errors },
   } = useForm();
 
+  const [resumeFile, setresumeFile] = useState(null)
   const [resumeName, setResumeName] = useState("");
+const [resumeText,setResumeText] = useState("")
+  
+  // function to extract resume text
+const extractResumeText =async (file)=>{
+  const arrayBuffer = await file.arrayBuffer();
 
+  const pdf = await pdfjsLib.getDocument({
+    data: arrayBuffer,
+  }).promise;
+
+  let text = "";
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+
+    const pageText = content.items
+      .map((item) => item.str)
+      .join(" ");
+
+    text += pageText + "\n";
+  }
+
+  return text;
+}
+
+  // form submit function 
   const onSubmit = (data) => {
     console.log(data);
+    console.log(resumeText);
+    console.log(resumeName);
   };
 
   return (
@@ -60,7 +94,7 @@ function InterviewSetup() {
 
             <div className="flex lg:hidden justify-center items-center gap-3 mb-10">
 
-              <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center font-bold">
+              <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-purple-700 flex items-center justify-center font-bold">
                 PA
               </div>
 
@@ -82,25 +116,7 @@ function InterviewSetup() {
               personalize the experience.
             </p>
 
-            {/* Progress */}
-{/* 
-            <div className="mt-8">
-
-              <div className="flex justify-between text-sm text-gray-400">
-
-                <span>Step 1 of 2</span>
-
-                <span>Basic Details</span>
-
-              </div>
-
-              <div className="mt-2 h-2 rounded-full bg-[#1B2438] overflow-hidden">
-
-                <div className="h-full w-1/2 rounded-full bg-gradient-to-r from-violet-500 to-purple-600"></div>
-
-              </div>
-
-            </div> */}
+         
 
             {/* ================= Form ================= */}
 
@@ -358,7 +374,7 @@ function InterviewSetup() {
                      
 
                       <option className="bg-[#181D30]">
-                        Typeing
+                        Typing
                       </option>
 
                       <option className="bg-[#181D30]">
@@ -553,12 +569,20 @@ function InterviewSetup() {
                 <input
                   id="resume"
                   type="file"
-                  accept=".pdf,.doc,.docx"
+                  accept=".pdf"
                   className="hidden"
-                  onChange={(e) =>
+                  onChange={async (e) =>{
+                      const file = e.target.files?.[0];
+
+                      if(!file) return;
                     setResumeName(
-                      e.target.files?.[0]?.name || ""
+                     file.name || ""
                     )
+                  setresumeFile(file)
+                  const text = await extractResumeText(file)
+                  setResumeText(text)
+                  }
+                    
                   }
                 />
 
@@ -600,66 +624,10 @@ function InterviewSetup() {
               </div>
 
               {/* ================= AI Tip Card ================= */}
-
-              <div className="rounded-2xl border border-violet-500/20 bg-violet-500/10 p-5">
-
-                <div className="flex gap-4">
-
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-500/20">
-                    🧠
-                  </div>
-
-                  <div>
-
-                    <h3 className="font-semibold text-lg">
-                      AI Tip
-                    </h3>
-
-                    <p className="mt-1 text-sm leading-7 text-gray-300">
-                      Uploading your resume helps the AI ask
-                      personalized questions based on your skills,
-                      projects and work experience, making the mock
-                      interview feel much more realistic.
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
+                  <AiTipCard/>
                             {/* ================= Footer ================= */}
 
-              <div className="rounded-2xl border border-[#2C3556] bg-[#181D30] p-5">
-
-                <div className="flex items-start gap-4">
-
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-500/15">
-                    🎤
-                  </div>
-
-                  <div>
-
-                    <h3 className="font-semibold">
-                      Before You Start
-                    </h3>
-
-                    <ul className="mt-2 space-y-2 text-sm text-gray-400">
-
-                      <li>• Make sure your microphone is working.</li>
-
-                      <li>• Sit in a quiet environment.</li>
-
-                      <li>• Speak naturally like a real interview.</li>
-
-                      <li>• Don't worry if you make mistakes—the AI is here to help you improve.</li>
-
-                    </ul>
-
-                  </div>
-
-                </div>
-
-              </div>
+              <FormFooter/>
 
               {/* ================= Buttons ================= */}
 
@@ -674,7 +642,7 @@ function InterviewSetup() {
 
                 <button
                   type="submit"
-                  className="group w-full flex-1 rounded-xl bg-gradient-to-r from-violet-600 to-purple-700 py-4 font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-violet-700/30"
+                  className="group w-full flex-1 rounded-xl bg-linear-to-r from-violet-600 to-purple-700 py-4 font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-violet-700/30"
                 >
                   <span className="flex items-center justify-center gap-2">
 
