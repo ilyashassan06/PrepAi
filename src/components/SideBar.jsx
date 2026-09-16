@@ -2,31 +2,71 @@ import {
   LayoutDashboard,
   ClipboardList,
   History,
+  LogOut,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 
 function SideBar() {
+  const { logout } = useAuth();
+
   const navLinkClass = ({ isActive }) =>
-    `group relative flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300 ${
+    `group relative flex items-center gap-3 rounded-xl px-4 py-3 text-[15px] font-medium transition-all duration-300 ${
       isActive
         ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
         : "text-slate-300 hover:bg-violet-600/10 hover:text-white"
     }`;
 
   return (
-    <aside className="hidden md:flex fixed left-0 top-0 h-screen w-64 flex-col bg-[#10162A] border-r border-[#2A3250] px-5 py-6">
+    <aside
+      className="
+        fixed
+        left-0
+        top-0
+        hidden
+        h-screen
+        w-64
+        flex-col
+        border-r
+        border-[#2A3250]
+        bg-[#10162A]
+        px-5
+        py-6
+        md:flex
+      "
+    >
 
-      {/* Logo */}
-      <div className="flex items-center gap-3 pb-8 border-b border-[#2A3250]">
+      {/* ================= Logo ================= */}
+      <div className="flex items-center gap-3 border-b border-[#2A3250] pb-7">
 
-        <div className="h-12 w-12 rounded-2xl bg-linear-to-br from-violet-500 to-purple-700 flex items-center justify-center text-xl font-bold shadow-lg shadow-violet-600/30">
+        {/* Logo Icon */}
+        <div
+          className="
+            flex
+            h-12
+            w-12
+            shrink-0
+            items-center
+            justify-center
+            rounded-2xl
+            bg-gradient-to-br
+            from-violet-500
+            to-purple-700
+            text-xl
+            font-bold
+            text-white
+            shadow-lg
+            shadow-violet-600/30
+          "
+        >
           IQ
         </div>
 
+        {/* Logo Text */}
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">
+          <h2 className="text-2xl font-bold tracking-tight text-white">
             Prep
-            <span className="text-violet-500">Ai</span>
+            <span className="text-violet-500">AI</span>
           </h2>
 
           <p className="text-xs text-slate-400">
@@ -36,80 +76,154 @@ function SideBar() {
 
       </div>
 
-      {/* Menu */}
-      <div className="mt-8">
+      {/* ================= Menu ================= */}
+      <div className="mt-6">
 
-        <p className="mb-3 px-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
+        <p
+          className="
+            mb-3
+            px-2
+            text-[11px]
+            font-semibold
+            uppercase
+            tracking-[0.18em]
+            text-slate-500
+          "
+        >
           Menu
         </p>
 
-        <nav className="space-y-2">
+        <nav className="space-y-1.5">
 
-          <NavLink to="/" className={navLinkClass}>
-
+          {/* Dashboard */}
+          <NavLink
+            to="/"
+            className={navLinkClass}
+          >
             {({ isActive }) => (
               <>
                 {isActive && (
-                  <span className="absolute left-0 h-8 w-1 rounded-r-full bg-violet-400" />
+                  <span
+                    className="
+                      absolute
+                      left-0
+                      h-7
+                      w-1
+                      rounded-r-full
+                      bg-violet-400
+                    "
+                  />
                 )}
 
-                <LayoutDashboard size={20} />
+                <LayoutDashboard
+                  size={19}
+                  strokeWidth={2}
+                />
 
-                Dashboard
+                <span>Dashboard</span>
               </>
             )}
-
           </NavLink>
 
-          <NavLink to="/InterviewSetup" className={navLinkClass}>
-
+          {/* New Interview */}
+          <NavLink
+            to="/InterviewSetup"
+            className={navLinkClass}
+          >
             {({ isActive }) => (
               <>
                 {isActive && (
-                  <span className="absolute left-0 h-8 w-1 rounded-r-full bg-violet-400" />
+                  <span
+                    className="
+                      absolute
+                      left-0
+                      h-7
+                      w-1
+                      rounded-r-full
+                      bg-violet-400
+                    "
+                  />
                 )}
 
-                <ClipboardList size={20} />
+                <ClipboardList
+                  size={19}
+                  strokeWidth={2}
+                />
 
-                New Interview
+                <span>New Interview</span>
               </>
             )}
-
           </NavLink>
 
-          <NavLink to="/History" className={navLinkClass}>
-
+          {/* History */}
+          <NavLink
+            to="/History"
+            className={navLinkClass}
+          >
             {({ isActive }) => (
               <>
                 {isActive && (
-                  <span className="absolute left-0 h-8 w-1 rounded-r-full bg-violet-400" />
+                  <span
+                    className="
+                      absolute
+                      left-0
+                      h-7
+                      w-1
+                      rounded-r-full
+                      bg-violet-400
+                    "
+                  />
                 )}
 
-                <History size={20} />
+                <History
+                  size={19}
+                  strokeWidth={2}
+                />
 
-                History
+                <span>History</span>
               </>
             )}
-
           </NavLink>
 
         </nav>
 
       </div>
 
-      {/* Bottom Card */}
-      <div className="mt-auto rounded-2xl bg-linear-to-br from-violet-600/20 to-purple-700/10 border border-violet-500/20 p-5">
+      {/* ================= Logout ================= */}
+      <div className="mt-auto border-t border-[#2A3250] pt-5">
 
-        <h3 className="font-semibold">
-          Upgrade to Pro
-        </h3>
+        <button
+          onClick={logout}
+          className="
+            group
+            flex
+            w-full
+            items-center
+            justify-center
+            gap-2.5
+            rounded-xl
+            border
+            border-violet-700/70
+            bg-transparent
+            py-2.5
+            text-sm
+            font-semibold
+            text-slate-200
+            transition-all
+            duration-300
+            hover:border-violet-600
+            hover:bg-violet-600
+            hover:text-white
+            hover:shadow-lg
+            hover:shadow-violet-600/20
+          "
+        >
+          <LogOut
+            size={18}
+            className="transition-transform duration-300 group-hover:-translate-x-0.5"
+          />
 
-        <p className="mt-2 text-sm text-slate-300">
-          Unlock unlimited AI interviews and premium analytics.
-        </p>
-
-        <button className="mt-4 w-full rounded-xl bg-violet-600 py-2.5 font-medium hover:bg-violet-700 transition">
-          Upgrade
+          <span>Logout</span>
         </button>
 
       </div>

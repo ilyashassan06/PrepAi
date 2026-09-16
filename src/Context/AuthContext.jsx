@@ -1,7 +1,7 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "./Firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 
@@ -11,6 +11,8 @@ const AuthContest = createContext();
 
 
 export  function AuthProvider({children}){
+
+ 
 
   const navigate = useNavigate();
 
@@ -48,6 +50,35 @@ useEffect(() => {
   return unsubscribe;
 }, []);
 
+
+const saveInterview = async (interviewData)=>{
+    if(!currentUser){
+     throw new Error("User not logged in");
+    }
+
+    try{
+        const historyRef=collection(
+          db,
+          "users",
+          currentUser.uid,
+          "history"
+        );
+
+        const historyDoc = await addDoc(historyRef,{
+          ...interviewData,
+          createdAt: serverTimestamp(),
+        })
+
+        
+
+    }
+    catch(error){
+
+    }
+
+
+}
+
   // Logout Function
   const logout = async () => {
     await signOut(auth);
@@ -62,6 +93,7 @@ useEffect(() => {
     userData,
     loading,
     logout,
+    saveInterview
   }}>
       {children}
     </AuthContest.Provider>

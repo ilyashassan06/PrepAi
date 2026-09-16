@@ -17,7 +17,7 @@ function Home() {
   return (
     <div className="w-full  flex flex-col gap-5 p-5 md:px-10 md:py-10z ">
 
-    <h1 className='md:text-3xl mb-4 text-2xl'>Welcome Back <span className="text-violet-500 font-bold">{userData.name}</span>! &#9995;</h1>
+    <h1 className='md:text-3xl mb-4 text-1xl'>Welcome Back <span className="text-violet-500 font-bold">{userData.name}</span>! &#9995;</h1>
      <DetailsGrid />
      <QuickAction/>
     </div>

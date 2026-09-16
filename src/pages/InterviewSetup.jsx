@@ -18,8 +18,13 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 import { useForm } from "react-hook-form";
 import AiTipCard from "../components/InterviewSetup/AiTipCard";
 import FormFooter from "../components/InterviewSetup/FormFooter";
+import { useAuth } from "../Context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 
 function InterviewSetup() {
+  const {currentUser,userData,logout,loading,saveInterview} = useAuth()
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -55,10 +60,25 @@ const extractResumeText =async (file)=>{
 }
 
   // form submit function 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+
+    await saveInterview({
+      name: data.name,
+      role: data.role,
+      company: data.company,
+      experience: data.experience,
+      interviewType: data.interviewType,
+      interviewMode: data.interviewMode,
+      difficulty: data.difficulty,
+      duration: data.duration,
+      resumeName: resumeName,
+      resumeText: resumeText,
+      instructions: data.instructions})
     console.log(data);
     console.log(resumeText);
     console.log(resumeName);
+
+navigate("/interview")
   };
 
   return (
