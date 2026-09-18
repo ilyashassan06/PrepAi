@@ -62,7 +62,7 @@ const extractResumeText =async (file)=>{
   // form submit function 
   const onSubmit = async (data) => {
 
-    await saveInterview({
+    const interviewData = {
       name: data.name,
       role: data.role,
       company: data.company,
@@ -73,12 +73,14 @@ const extractResumeText =async (file)=>{
       duration: data.duration,
       resumeName: resumeName,
       resumeText: resumeText,
-      instructions: data.instructions})
-    console.log(data);
-    console.log(resumeText);
-    console.log(resumeName);
+      instructions: data.instructions}
 
-navigate("/interview")
+    await saveInterview(interviewData)
+    // console.log(data);
+    // console.log(resumeText);
+    // console.log(resumeName);
+
+navigate("/Interview",{state:interviewData})
   };
 
   return (

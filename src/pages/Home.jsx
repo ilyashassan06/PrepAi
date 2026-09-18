@@ -10,13 +10,19 @@ function Home() {
   const {currentUser,userData,logout,loading} = useAuth()
 
   console.log(userData)
+          if(loading || (currentUser && !userData)){
+    return(
+      <div className="flex min-h-[calc(100vh-64px)] w-full items-center justify-center">
+        
+        <LoadingScreen />
 
-  if(loading || (currentUser && !userData)){
-    return <LoadingScreen />
+      </div>
+    )
   }
+  
   return (
     <div className="w-full  flex flex-col gap-5 p-5 md:px-10 md:py-10z ">
-
+      
     <h1 className='md:text-3xl mb-4 text-1xl'>Welcome Back <span className="text-violet-500 font-bold">{userData.name}</span>! &#9995;</h1>
      <DetailsGrid />
      <QuickAction/>
