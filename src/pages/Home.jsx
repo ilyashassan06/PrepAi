@@ -9,7 +9,7 @@ function Home() {
 
   const {currentUser,userData,logout,loading} = useAuth()
 
-  console.log(userData)
+  
           if(loading || (currentUser && !userData)){
     return(
       <div className="flex min-h-[calc(100vh-64px)] w-full items-center justify-center">

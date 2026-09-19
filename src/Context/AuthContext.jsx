@@ -16,9 +16,12 @@ export  function AuthProvider({children}){
 
   const navigate = useNavigate();
 
+
+
     const [currentUser,setCurrentUser] = useState(null);
     const [userData,setUserData] = useState(null);
     const [loading,setLoading] = useState(true)
+    
 
 
      // Listen for Login / Logout
